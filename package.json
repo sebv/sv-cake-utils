@@ -4,18 +4,15 @@
   , "description": "cake tools"
   , "keywords": []
   , "author": "Seb Vincent <seb.vincent@gmail.com>"
-  , "--repository": { "type": "git", "url": "git@github.com:sebv/node-make-sync.git" }
+  , "repository": { "type": "git", "url": "git@github.com:sebv/sv-cake-utils.git" }
   , "main": "./index"
   , "engine": "node >= 0.6.1"
   , "scripts": {
     "test": "cake test"
   }
   , "dependencies": {
-    "coffee-script" : "latest"
-    , "underscore": "latest"
   }
   , "devDependencies" : {
-    "mocha" : "latest"
-    , "should": "latest"
+    "coffee-script" : "latest"
   }
 }
