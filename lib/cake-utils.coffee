@@ -1,4 +1,4 @@
-{execFile, spawn, exec} = require 'child_process'
+cp = require 'child_process'
 
 exports.coffee =
   compile: (paths , watch = false) ->    
@@ -9,14 +9,14 @@ exports.coffee =
 
 exports.mocha =
   test: (dir) ->    
-    execFile 'find', [ dir ] , (err, stdout, stderr) ->
+    cp.execFile 'find', [ dir ] , (err, stdout, stderr) ->
       files = (stdout.split '\n').filter( (name) -> name.match /.+\-test.coffee/ )
       params = ['-R', 'spec', '--colors'].concat files
       spawn 'mocha', params
 
 exports.js =
   clean: (dirs , files) ->
-    execFile 'find', dirs.concat(files) , (err, stdout, stderr) ->
+    cp.execFile 'find', dirs.concat(files) , (err, stdout, stderr) ->
       _files = (stdout.split '\n').filter( (name) -> name.match /.+\.js/ )
       spawn 'rm', _files, false if _files.length > 0 
 
@@ -24,8 +24,8 @@ exports.grep =
   debug: -> grepInSource('debugger')
   log: -> grepInSource('console.log')
 
-exports.grepInSource = (word) ->
-  execFile 'find', [ '.' ] , (err, stdout, stderr) ->
+exports.grepInSource = grepInSource = (word) ->
+  cp.execFile 'find', [ '.' ] , (err, stdout, stderr) ->
     files = (stdout.split '\n')\
       .filter( (name) -> not name.match /\/node_modules\//)\
       .filter( (name) -> not name.match /\/\.git\//)\
@@ -34,8 +34,8 @@ exports.grepInSource = (word) ->
         (name.match /\.coffee$/ ) )
     spawn 'grep', ([word].concat files), false 
 
-exports.spawn = (cmd,params,exitOnError=true) ->
-  proc = spawn cmd, params
+exports.spawn = spawn = (cmd,params,exitOnError=true) ->
+  proc = cp.spawn cmd, params
   proc.stdout.on 'data', (buffer) -> process.stdout.write buffer.toString()
   proc.stderr.on 'data', (buffer) -> process.stderr.write buffer.toString()
   proc
