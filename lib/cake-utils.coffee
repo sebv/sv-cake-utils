@@ -8,17 +8,28 @@ exports.coffee =
     spawn 'coffee', args
 
 exports.mocha =
-  test: (dir) ->    
+  test: (dir, done) ->
     cp.execFile 'find', [ dir ] , (err, stdout, stderr) ->
-      files = (stdout.split '\n').filter( (name) -> name.match /.+\-test.coffee/ )
-      params = ['-R', 'spec', '--colors'].concat files
-      spawn 'mocha', params
-
+      files = (stdout.split '\n').filter( (name) -> name.match /.+\.coffee/ )
+      args = ['-R', 'spec', '--colors'].concat files
+      proc = spawn 'mocha', args
+      proc.on 'exit', (status) ->    
+        done status if done?
+        
+exports.vows =   
+  test: (dir, done) ->    
+    cp.execFile 'find', [ dir ] , (err, stdout, stderr) ->
+      files = (stdout.split '\n').filter( (name) -> name.match /.+\.coffee/ )
+      args = ['--spec'].concat files
+      proc = spawn 'vows', args
+      proc.on 'exit', (status) ->    
+        done status if done?
+      
 exports.js =
   clean: (dirs , files) ->
     cp.execFile 'find', dirs.concat(files) , (err, stdout, stderr) ->
       _files = (stdout.split '\n').filter( (name) -> name.match /.+\.js/ )
-      spawn 'rm', _files, false if _files.length > 0 
+      spawn 'rm', _files if _files.length > 0 
 
 exports.grep =
   debug: -> grepInSource('debugger')
@@ -32,10 +43,20 @@ exports.grepInSource = grepInSource = (word) ->
       .filter( (name) -> 
         ( name.match /\.js$/) or 
         (name.match /\.coffee$/ ) )
-    spawn 'grep', ([word].concat files), false 
+    spawn 'grep', ([word].concat files) 
 
-exports.spawn = spawn = (cmd,params,exitOnError=true) ->
-  proc = cp.spawn cmd, params
+exports.killAllProc = (procName) ->
+  cmd = "kill -9 `ps -el | grep #{procName} | grep -v grep | awk '{ print $2 }'`"
+  exec cmd
+
+exports.spawn = spawn = (cmd,args) ->
+  proc = cp.spawn cmd, args
+  proc.stdout.on 'data', (buffer) -> process.stdout.write buffer.toString()
+  proc.stderr.on 'data', (buffer) -> process.stderr.write buffer.toString()
+  proc
+
+exports.exec = exec = (cmd) ->
+  proc = cp.exec cmd
   proc.stdout.on 'data', (buffer) -> process.stdout.write buffer.toString()
   proc.stderr.on 'data', (buffer) -> process.stderr.write buffer.toString()
   proc
