@@ -39,6 +39,7 @@ exports.grepInSource = grepInSource = (word) ->
   cp.execFile 'find', [ '.' ] , (err, stdout, stderr) ->
     files = (stdout.split '\n')\
       .filter( (name) -> not name.match /\/node_modules\//)\
+      .filter( (name) -> not name.match /\/examples\//)\
       .filter( (name) -> not name.match /\/\.git\//)\
       .filter( (name) -> 
         ( name.match /\.js$/) or 
