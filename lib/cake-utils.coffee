@@ -1,9 +1,12 @@
 cp = require 'child_process'
 
 exports.coffee =
-  compile: (paths , watch = false) ->    
+  compile: (paths, opts) ->    
     args = ['--compile']
-    args.push('--watch') if watch
+    if(opts?.output?)
+      args.push('--output')
+      args.push(opts.output)
+    args.push('--watch') if(opts?.watch is true)
     args = args.concat paths
     spawn 'coffee', args
 
