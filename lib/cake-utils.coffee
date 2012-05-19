@@ -1,3 +1,4 @@
+binDir = __dirname + '/../node_modules/.bin'
 cp = require 'child_process'
 
 exports.coffee =
@@ -8,14 +9,14 @@ exports.coffee =
       args.push(opts.output)
     args.push('--watch') if(opts?.watch is true)
     args = args.concat paths
-    spawn 'coffee', args
+    spawn "#{binDir}/coffee", args
 
 exports.mocha =
   test: (dir, done) ->
     cp.execFile 'find', [ dir ] , (err, stdout, stderr) ->
       files = (stdout.split '\n').filter( (name) -> name.match /.+\.coffee/ )
       args = ['-R', 'spec', '--colors'].concat files
-      proc = spawn 'mocha', args
+      proc = spawn "#{binDir}/mocha", args
       proc.on 'exit', (status) ->    
         done status if done?
         
@@ -24,7 +25,7 @@ exports.vows =
     cp.execFile 'find', [ dir ] , (err, stdout, stderr) ->
       files = (stdout.split '\n').filter( (name) -> name.match /.+\.coffee/ )
       args = ['--spec'].concat files
-      proc = spawn 'vows', args
+      proc = spawn "#{binDir}/vows", args
       proc.on 'exit', (status) ->    
         done status if done?
       
