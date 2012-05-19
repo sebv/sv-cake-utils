@@ -1,4 +1,4 @@
-binDir = __dirname + '/../node_modules/.bin'
+binDir = './node_modules/.bin'
 cp = require 'child_process'
 
 exports.coffee =
