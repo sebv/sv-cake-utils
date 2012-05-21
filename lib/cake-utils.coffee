@@ -28,6 +28,15 @@ exports.vows =
       proc = spawn "#{binDir}/vows", args
       proc.on 'exit', (status) ->    
         done status if done?
+
+exports.nodeunit =
+  test: (dir, done) ->
+    cp.execFile 'find', [ dir ] , (err, stdout, stderr) ->
+      files = (stdout.split '\n').filter( (name) -> name.match /.+\.coffee/ )
+      args = ['-R', 'spec', '--colors'].concat files
+      proc = spawn "#{binDir}/nodeunit", args
+      proc.on 'exit', (status) ->    
+        done status if done?
       
 exports.js =
   clean: (dirs , files, excludePatterns) ->
