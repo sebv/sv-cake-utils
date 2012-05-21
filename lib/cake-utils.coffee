@@ -30,9 +30,14 @@ exports.vows =
         done status if done?
       
 exports.js =
-  clean: (dirs , files) ->
-    cp.execFile 'find', dirs.concat(files) , (err, stdout, stderr) ->
+  clean: (dirs , files, excludePatterns) ->
+    dirs.concat(files) if file?
+    cp.execFile 'find', dirs , (err, stdout, stderr) ->
       _files = (stdout.split '\n').filter( (name) -> name.match /.+\.js/ )
+      if(excludePatterns?)
+        excludePatterns = [excludePatterns] unless excludePatterns instanceof Array
+        for excludePattern in excludePatterns
+          _files = _files.filter (name) -> not(name.match excludePatterns)
       spawn 'rm', _files if _files.length > 0 
 
 exports.grep =
