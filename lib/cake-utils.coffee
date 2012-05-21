@@ -33,7 +33,8 @@ exports.nodeunit =
   test: (dir, done) ->
     cp.execFile 'find', [ dir ] , (err, stdout, stderr) ->
       files = (stdout.split '\n').filter( (name) -> name.match /.+\.coffee/ )
-      args = ['-R', 'spec', '--colors'].concat files
+      #args = ['-R', 'spec', '--colors'].concat files
+      args = files
       proc = spawn "#{binDir}/nodeunit", args
       proc.on 'exit', (status) ->    
         done status if done?
