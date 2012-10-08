@@ -12,6 +12,6 @@
   , "dependencies": {
   }
   , "devDependencies" : {
-    "coffee-script": "git://github.com/jashkenas/coffee-script.git"
+    "coffee-script": "latest"
   }
 }
