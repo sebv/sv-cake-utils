@@ -12,6 +12,6 @@
   , "dependencies": {
   }
   , "devDependencies" : {
-    "coffee-script": "latest"
+    "coffee-script": "1.3.x"
   }
 }
