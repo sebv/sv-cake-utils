@@ -64,20 +64,20 @@ exports.grepInSource = grepInSource = (word) ->
         (name.match /\.coffee$/ ) )
     spawn 'grep', ([word].concat files) 
 
-exports.killAllProc = (procName) ->
+exports.killAllProc = (procName, done) ->
   cmd = "kill -9 `ps -el | grep #{procName} | grep -v grep | awk '{ print $2 }'`"
-  exec cmd
+  exec cmd, done
 
-exports.spawn = spawn = (cmd,args) ->
-  proc = cp.spawn cmd, args
+exports.spawn = spawn = (cmd,args, done) ->
+  proc = cp.spawn cmd, args, (err) ->
+    done err if done?    
   proc.stdout.on 'data', (buffer) -> process.stdout.write buffer.toString()
   proc.stderr.on 'data', (buffer) -> process.stderr.write buffer.toString()
   proc
 
-exports.exec = exec = (cmd) ->
-  proc = cp.exec cmd
+exports.exec = exec = (cmd, done) ->
+  proc = cp.exec cmd, (err) ->
+    done err if done?
   proc.stdout.on 'data', (buffer) -> process.stdout.write buffer.toString()
   proc.stderr.on 'data', (buffer) -> process.stderr.write buffer.toString()
-  proc
-
   
