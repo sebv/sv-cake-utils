@@ -1,17 +1,19 @@
 {
-    "name": "sv-cake-utils"
-  , "version": "0.1.5"
-  , "description": "cake tools"
-  , "keywords": []
-  , "author": "Seb Vincent <seb.vincent@gmail.com>"
-  , "repository": { "type": "git", "url": "git@github.com:sebv/sv-cake-utils.git" }
-  , "main": "./index"
-  , "engine": "node >= 0.6.1"
-  , "scripts": {
-  }
-  , "dependencies": {
-  }
-  , "devDependencies" : {
-    "coffee-script": "latest"
+  "name": "sv-cake-utils",
+  "version": "0.1.6",
+  "description": "cake tools",
+  "keywords": [],
+  "author": "Seb Vincent <seb.vincent@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:sebv/sv-cake-utils.git"
+  },
+  "main": "./index",
+  "engine": "node >= 0.6.1",
+  "scripts": {},
+  "dependencies": {
+  },
+  "devDependencies": {
+    "coffee-script": "~1.6.3"
   }
 }
