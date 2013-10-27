@@ -11,8 +11,7 @@
   "main": "./index",
   "engine": "node >= 0.6.1",
   "scripts": {},
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "coffee-script": "~1.6.3"
   }
